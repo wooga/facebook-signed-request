@@ -21,6 +21,9 @@ module Facebook
       @signature        = extract_request_signature
       @payload          = extract_request_payload
       @data             = parse_request_playload
+
+      validate_algorithm
+      validate_signature
     end
 
 
@@ -51,11 +54,6 @@ module Facebook
       end
     end
 
-    def base64_url_decode( encoded_string )
-      encoded_string << '=' until ( encoded_string.length % 4 == 0 )
-      Base64.strict_decode64(encoded_string.gsub("-", "+").gsub("_", "/"))
-    end
-
     def validate_algorithm
       if @data.nil? || @data['algorithm'] != "HMAC-SHA256"
         @errors << "Invalid Algorithm. Expected: HMAC-SHA256"
@@ -74,10 +72,12 @@ module Facebook
       end
     end
 
-    def valid?
-      validate_algorithm
-      validate_signature
+    def base64_url_decode( encoded_string )
+      encoded_string << '=' until ( encoded_string.length % 4 == 0 )
+      Base64.strict_decode64(encoded_string.gsub("-", "+").gsub("_", "/"))
+    end
 
+    def valid?
       @errors.empty?
     end
 

@@ -65,7 +65,7 @@ module Facebook
       computed_signature = digestor.hexdigest( @encoded_data )
 
       if @signature != computed_signature
-        message = "Signature do not match. " \
+        message = "Signatures do not match. " \
                   "Computed: #{computed_signature} but was #{@signature.inspect}"
 
         @errors << message

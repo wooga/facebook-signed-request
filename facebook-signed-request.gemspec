@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["hukl"]
   s.email       = ["contact@smyck.org"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Parses and validates Facebook signed requests}
+  s.description = %q{Parses and validates Facebook signed requests}
 
   s.rubyforge_project = "facebook-signed-request"
 

@@ -77,4 +77,22 @@ class SignedRequestTest < Test::Unit::TestCase
     )
   end
 
+  test "encode and sign request params" do
+    request_1 = Facebook::SignedRequest.new( @valid_request )
+
+    reencoded_request = Facebook::SignedRequest.encode_and_sign(request_1.data)
+
+    sig_1, data_1 = @valid_request.split(".", 2)
+    sig_2, data_2 = reencoded_request.split(".", 2)
+
+    # Simulate invalid raw Base64 from Facebook by removing padding
+    assert_equal sig_1, sig_2.gsub(/=+$/, "")
+    assert_equal data_1, data_2.gsub(/=+$/, "")
+
+    request_2 = Facebook::SignedRequest.new( reencoded_request )
+
+    assert_equal request_1.signature, request_2.signature
+    assert_equal request_1.data,      request_2.data
+  end
+
 end

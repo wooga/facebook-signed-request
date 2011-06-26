@@ -3,6 +3,19 @@ module Facebook
 
     class << self
       attr_accessor :secret
+
+      # Creates a signed_request with correctly padded Base64 encoding.
+      # Mostly useful for testing.
+      def encode_and_sign options
+        encoded_data      = Base64.strict_encode64( options.to_json )
+
+        digestor          = Digest::HMAC.new( @secret, Digest::SHA256 )
+        signature         = digestor.digest( encoded_data )
+        encoded_signature = Base64.strict_encode64( signature )
+        encoded_signature = encoded_signature.gsub('+','_').gsub('/', '_')
+
+        "#{encoded_signature}.#{encoded_data}"
+      end
     end
 
     attr_reader :errors, :signature, :data

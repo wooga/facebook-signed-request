@@ -25,7 +25,24 @@ module Facebook
       @secret = options[:secret] || SignedRequest.secret
       @errors = []
 
+      check_for_invalid_arguments
 
+      @signature        = extract_request_signature
+      @payload          = extract_request_payload
+      @data             = parse_request_playload
+
+      validate_algorithm
+      validate_signature
+      validate_timestamp if options[:strict] == true
+    end
+
+    def valid?
+      @errors.empty?
+    end
+
+    private
+
+    def check_for_invalid_arguments
       if @encoded_signature.nil? || @encoded_data.nil?
         raise ArgumentError, "Invalid Format. See http://developers.facebook.com/docs/authentication/signed_request/"
       end
@@ -37,14 +54,6 @@ module Facebook
       unless @secret.is_a?( String )
         raise ArgumentError, "Secret should be a String"
       end
-
-      @signature        = extract_request_signature
-      @payload          = extract_request_payload
-      @data             = parse_request_playload
-
-      validate_algorithm
-      validate_signature
-      validate_timestamp if options[:strict] == true
     end
 
     def base64_url_decode( encoded_string )
@@ -52,15 +61,9 @@ module Facebook
       Base64.strict_decode64(encoded_string.gsub("-", "+").gsub("_", "/"))
     end
 
-    def valid?
-      @errors.empty?
-    end
-
-    private
-
     def extract_request_signature
       begin
-        return base64_url_decode(@encoded_signature).unpack('H*')[0]
+        return base64_url_decode(@encoded_signature)
       rescue ArgumentError
         @errors << "Invalid Base64 encoding for signature"
         return nil
@@ -93,7 +96,7 @@ module Facebook
 
     def validate_signature
       digestor = Digest::HMAC.new( @secret, Digest::SHA256 )
-      computed_signature = digestor.hexdigest( @encoded_data )
+      computed_signature = digestor.digest( @encoded_data )
 
       if @signature != computed_signature
         message = "Signatures do not match. " \

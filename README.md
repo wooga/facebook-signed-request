@@ -32,4 +32,9 @@ request.data
 #      },
 #      "user_id"=>"100000656666199"
 #    }
+
+
+Facebook::SignedRequest.encode_and_sign { :foo => bar }
+# => g_eE3hoQDPKFusHcc_Tj7k2xxo3mCKsOEXKMViq0pAY=.eyJmb28iOiJiYXIifQ==
+
 ```

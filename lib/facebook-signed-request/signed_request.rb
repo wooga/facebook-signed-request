@@ -34,6 +34,16 @@ module Facebook
       validate_timestamp if options[:strict] == true
     end
 
+    def base64_url_decode( encoded_string )
+      encoded_string << '=' until ( encoded_string.length % 4 == 0 )
+      Base64.strict_decode64(encoded_string.gsub("-", "+").gsub("_", "/"))
+    end
+
+    def valid?
+      @errors.empty?
+    end
+
+    private
 
     def extract_request_signature
       begin
@@ -86,15 +96,6 @@ module Facebook
       if timestamp && Time.at( timestamp ) <= Time.now
         raise ArgumentError, "OAuth Token has expired: #{Time.at( timestamp )}"
       end
-    end
-
-    def base64_url_decode( encoded_string )
-      encoded_string << '=' until ( encoded_string.length % 4 == 0 )
-      Base64.strict_decode64(encoded_string.gsub("-", "+").gsub("_", "/"))
-    end
-
-    def valid?
-      @errors.empty?
     end
 
   end

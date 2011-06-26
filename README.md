@@ -4,6 +4,12 @@ Usage
 
 ```ruby
     require 'facebook-signed-request'
+
+    # The secret can be set globally
+    Facebook::SignedRequest.secret = "dkhsdfhjsd123d2ed3q1wd222qd2"
+    request = Facebook::SignedRequest.new( params[:signed_request] )
+
+    # or as an optional parameter for individual calls
     request = Facebook::SignedRequest.new( params[:signed_request], secret )
 
     request.valid?

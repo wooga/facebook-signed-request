@@ -1,16 +1,29 @@
 module Facebook
   class SignedRequest
+
+    class << self
+      attr_accessor :secret
+    end
+
     attr_reader :errors, :signature, :data
 
-    def initialize( request_data, secret )
+    def initialize( request_data, options = {} )
       @encoded_signature, @encoded_data = request_data.split(".", 2)
+      @secret = options[:secret] || SignedRequest.secret
+      @errors = []
+
 
       if @encoded_signature.nil? || @encoded_data.nil?
         raise ArgumentError, "Invalid Format. See http://developers.facebook.com/docs/authentication/signed_request/"
       end
 
-      @errors           = []
-      @secret           = secret
+      if @secret.nil?
+        raise ArgumentError, "No secret provided. Use SignedRequest.secret= or the options hash"
+      end
+
+      unless @secret.is_a?( String )
+        raise ArgumentError, "Secret should be a String"
+      end
 
       @signature        = extract_request_signature
       @payload          = extract_request_payload

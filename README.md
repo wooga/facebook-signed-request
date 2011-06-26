@@ -1,4 +1,6 @@
-## Usage
+Usage
+=====
+
 
 ```ruby
 require 'facebook-signed-request'
@@ -30,6 +32,4 @@ request.data
 #      },
 #      "user_id"=>"100000656666199"
 #    }
-
-
 ```

@@ -65,4 +65,16 @@ class SignedRequestTest < Test::Unit::TestCase
     assert_equal expected, exception.message
   end
 
+  test "request with :strict => true fails for expired oauth token" do
+    exception = assert_raise ArgumentError do
+      request = Facebook::SignedRequest.new( @valid_request, :strict => true )
+    end
+
+
+    assert(
+      exception.message.match("OAuth Token has expired"),
+      "Wrong Exception message"
+    )
+  end
+
 end

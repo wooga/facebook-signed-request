@@ -31,6 +31,7 @@ module Facebook
 
       validate_algorithm
       validate_signature
+      validate_timestamp if options[:strict] == true
     end
 
 
@@ -57,12 +58,12 @@ module Facebook
         return JSON.parse( @payload )
       rescue
         @errors << "Invalid JSON object"
-        return nil
+        return {}
       end
     end
 
     def validate_algorithm
-      if @data.nil? || @data['algorithm'] != "HMAC-SHA256"
+      if @data['algorithm'] != "HMAC-SHA256"
         @errors << "Invalid Algorithm. Expected: HMAC-SHA256"
       end
     end
@@ -76,6 +77,14 @@ module Facebook
                   "Computed: #{computed_signature} but was #{@signature.inspect}"
 
         @errors << message
+      end
+    end
+
+    def validate_timestamp
+      timestamp = @data['expires']
+
+      if timestamp && Time.at( timestamp ) <= Time.now
+        raise ArgumentError, "OAuth Token has expired: #{Time.at( timestamp )}"
       end
     end
 

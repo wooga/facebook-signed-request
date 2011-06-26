@@ -4,7 +4,7 @@ require "facebook-signed-request/version"
 
 Gem::Specification.new do |s|
   s.name        = "facebook-signed-request"
-  s.version     = Facebook::Signed::Request::VERSION
+  s.version     = Facebook::SignedRequest::VERSION
   s.authors     = ["hukl"]
   s.email       = ["contact@smyck.org"]
   s.homepage    = ""

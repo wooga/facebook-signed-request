@@ -44,3 +44,5 @@ Usage
     # => g_eE3hoQDPKFusHcc_Tj7k2xxo3mCKsOEXKMViq0pAY=.eyJmb28iOiJiYXIifQ==
 
 ```
+
+Run the tests with ```rake test:units```

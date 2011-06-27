@@ -9,8 +9,8 @@ module Facebook
       def encode_and_sign options
         encoded_data      = Base64.strict_encode64( options.to_json )
 
-        digestor          = Digest::HMAC.new( @secret, Digest::SHA256 )
-        signature         = digestor.digest( encoded_data )
+        digestor          = OpenSSL::Digest::Digest.new('sha256')
+        signature         = OpenSSL::HMAC.digest( digestor, @secret, encoded_data )
         encoded_signature = Base64.strict_encode64( signature )
         encoded_signature = encoded_signature.gsub('+','_').gsub('/', '_')
 
@@ -95,8 +95,10 @@ module Facebook
     end
 
     def validate_signature
-      digestor = Digest::HMAC.new( @secret, Digest::SHA256 )
-      computed_signature = digestor.digest( @encoded_data )
+      digestor            = OpenSSL::Digest::Digest.new('sha256')
+      computed_signature  = OpenSSL::HMAC.digest(
+        digestor, @secret, @encoded_data
+      )
 
       if @signature != computed_signature
         message = "Signatures do not match. " \

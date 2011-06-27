@@ -56,7 +56,8 @@ module Facebook
       end
     end
 
-    def base64_url_decode( encoded_string )
+    def base64_url_decode( encoded_string_orig )
+      encoded_string = encoded_string_orig.dup
       encoded_string << '=' until ( encoded_string.length % 4 == 0 )
       Base64.strict_decode64(encoded_string.gsub("-", "+").gsub("_", "/"))
     end

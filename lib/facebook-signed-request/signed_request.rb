@@ -27,9 +27,10 @@ module Facebook
 
       check_for_invalid_arguments
 
-      @signature        = extract_request_signature
-      @payload          = extract_request_payload
-      @data             = parse_request_playload
+      @signature          = extract_request_signature
+      @computed_signature = compute_signature
+      @payload            = extract_request_payload
+      @data               = parse_request_playload
 
       validate_algorithm
       validate_signature
@@ -56,8 +57,7 @@ module Facebook
       end
     end
 
-    def base64_url_decode( encoded_string_orig )
-      encoded_string = encoded_string_orig.dup
+    def base64_url_decode( encoded_string )
       encoded_string << '=' until ( encoded_string.length % 4 == 0 )
       Base64.strict_decode64(encoded_string.tr('-_','+/'))
     end
@@ -95,15 +95,17 @@ module Facebook
       end
     end
 
-    def validate_signature
+    def compute_signature
       digestor            = OpenSSL::Digest::Digest.new('sha256')
       computed_signature  = OpenSSL::HMAC.digest(
         digestor, @secret, @encoded_data
       )
+    end
 
-      if @signature != computed_signature
+    def validate_signature
+      if @signature != @computed_signature
         message = "Signatures do not match. " \
-                  "Computed: #{computed_signature} but was #{@signature.inspect}"
+                  "Computed: #{@computed_signature} but was #{@signature}"
 
         @errors << message
       end

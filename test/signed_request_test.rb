@@ -6,11 +6,11 @@ class SignedRequestTest < Test::Unit::TestCase
 
   def setup
 
-    Facebook::SignedRequest.secret = "897a956a2f7eadcc5783a458fe3e7556"
+    Facebook::SignedRequest.secret = "897z956a2z7zzzzz5783z458zz3z7556"
 
-    @valid_request      = "vl0p_bGyDeVZ2I21cJvLd5C9CwpMkU2mcp1eUGWdvWs.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEzMDg5ODg4MDAsImlzc3VlZF9hdCI6MTMwODk4NTAxOCwib2F1dGhfdG9rZW4iOiIxMTQ5NTIyOTg1OTM4MTN8Mi5BUUJBdHRSbExWbndxTlBaLjM2MDAuMTMwODk4ODgwMC4xLTEwMDAwMDY1NDM0MzE5OXxUNDl3M0Jxb1pVZWd5cHJ1NTFHcmE3MGhFRDgiLCJ1c2VyIjp7ImNvdW50cnkiOiJkZSIsImxvY2FsZSI6ImVuX1VTIiwiYWdlIjp7Im1pbiI6MjF9fSwidXNlcl9pZCI6IjEwMDAwMDY1NDM0MzE5OSJ9"
-    @invalid_request_1  = "l0p_bGyDeVZ2I21cJvLd5C9CwpMkU2mcp1eUGWdvWs.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEzMDg5ODg4MDAsImlzc3VlZF9hdCI6MTMwODk4NTAxOCwib2F1dGhfdG9rZW4iOiIxMTQ5NTIyOTg1OTM4MTN8Mi5BUUJBdHRSbExWbndxTlBaLjM2MDAuMTMwODk4ODgwMC4xLTEwMDAwMDY1NDM0MzE5OXxUNDl3M0Jxb1pVZWd5cHJ1NTFHcmE3MGhFRDgiLCJ1c2VyIjp7ImNvdW50cnkiOiJkZSIsImxvY2FsZSI6ImVuX1VTIiwiYWdlIjp7Im1pbiI6MjF9fSwidXNlcl9pZCI6IjEwMDAwMDY1NDM0MzE5OSJ9"
-    @invalid_request_2  = "vl0p_bGyDeVZ2I21cJvLd5C9CwpMkU2mcp1eUGWdvWs.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEzMDg5ODg4MDAsImlzc3VlZF9hdCI6MTMwODk4NTAxOCwib2F1dGhfdG9rZW4iOiIxMTQ5NTIyOTg1OTM4MTN8Mi5BUUJBdHRSbExWbndxTlBaLjM2MDAuMTMwODk4ODgwMC4xLTEwMDAwMDY1NDM0MzE5OXxUNDl3M0Jxb1pVZWd5cHJ1NTFHcmE3MGhFRDgiLCJ1c2VyIjp7ImNvdW50cnkiOiJkZSIsImxvY2FsZSI6ImVuX1VTIiwiYWdlIjp7Im1pbiI6MjF9fSwidXNlcl9pZCI6IjEwMDAwMDY1NDM0MzE5OSJ"
+    @valid_request      = "53umfudisP7mKhsi9nZboBg15yMZKhfQAARL9UoZtSE.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEzMDg5ODg4MDAsImlzc3VlZF9hdCI6MTMwODk4NTAxOCwib2F1dGhfdG9rZW4iOiIxMTExMTExMTExMTExMTF8Mi5BUUJBdHRSbExWbndxTlBaLjM2MDAuMTExMTExMTExMS4xLTExMTExMTExMTExMTExMXxUNDl3M0Jxb1pVZWd5cHJ1NTFHcmE3MGhFRDgiLCJ1c2VyIjp7ImNvdW50cnkiOiJkZSIsImxvY2FsZSI6ImVuX1VTIiwiYWdlIjp7Im1pbiI6MjF9fSwidXNlcl9pZCI6IjExMTExMTExMTExMTExMSJ9"
+    @invalid_request_1  = "umfudisP7mKhsi9nZboBg15yMZKhfQAARL9UoZtSE.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEzMDg5ODg4MDAsImlzc3VlZF9hdCI6MTMwODk4NTAxOCwib2F1dGhfdG9rZW4iOiIxMTExMTExMTExMTExMTF8Mi5BUUJBdHRSbExWbndxTlBaLjM2MDAuMTExMTExMTExMS4xLTExMTExMTExMTExMTExMXxUNDl3M0Jxb1pVZWd5cHJ1NTFHcmE3MGhFRDgiLCJ1c2VyIjp7ImNvdW50cnkiOiJkZSIsImxvY2FsZSI6ImVuX1VTIiwiYWdlIjp7Im1pbiI6MjF9fSwidXNlcl9pZCI6IjExMTExMTExMTExMTExMSJ9"
+    @invalid_request_2  = "53umfudisP7mKhsi9nZboBg15yMZKhfQAARL9UoZtSE.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEzMDg5ODg4MDAsImlzc3VlZF9hdCI6MTMwODk4NTAxOCwib2F1dGhfdG9rZW4iOiIxMTExMTExMTExMTExMTF8Mi5BUUJBdHRSbExWbndxTlBaLjM2MDAuMTExMTExMTExMS4xLTExMTExMTExMTExMTExMXxUNDl3M0Jxb1pVZWd5cHJ1NTFHcmE3MGhFRDgiLCJ1c2VyIjp7ImNvdW50cnkiOiJkZSIsImxvY2FsZSI6ImVuX1VTIiwiYWdlIjp7Im1pbiI6MjF9fSwidXNlcl9pZCI6IjExMTExMTExMTExMTExMSJ"
 
   end
 
@@ -85,8 +85,8 @@ class SignedRequestTest < Test::Unit::TestCase
     sig_2, data_2 = reencoded_request.split(".", 2)
 
     # Simulate invalid raw Base64 from Facebook by removing padding
-    assert_equal sig_1, sig_2.gsub(/=+$/, "")
-    assert_equal data_1, data_2.gsub(/=+$/, "")
+    assert_equal sig_1, sig_2
+    assert_equal data_1, data_2
 
     request_2 = Facebook::SignedRequest.new( reencoded_request )
 
@@ -94,6 +94,23 @@ class SignedRequestTest < Test::Unit::TestCase
     assert_equal request_1.data,      request_2.data
   end
 
+  test "ring encoding request with invalid base64 signature and payload" do
 
+    fake = {"algorithm"=>"HMAC-SHA256", "expires"=>1309186800, "issued_at"=>1309183033, "oauth_token"=>"111111111111111|2.AQDpIv3FOWbnCv8z.3600.1111111100.1-1111100000|0vSxxsZC1R_I6fb_Jw2I8WEXztE", "user"=>{"country"=>"en", "locale"=>"en_US", "age"=>{"min"=>21}}, "user_id"=>"1111100000"}
+
+    Facebook::SignedRequest.secret = "11ce1114e5450047acb7764c64c6ca24"
+
+    request_string    = Facebook::SignedRequest.encode_and_sign( fake )
+    req_sig, req_data = request_string.split(".", 2)
+
+    assert req_sig  !~ /\=$/
+    assert req_data !~ /\=$/
+
+    request = Facebook::SignedRequest.new( request_string )
+
+    assert Base64.urlsafe_encode64( request.signature ) =~ /\=$/
+    assert request.encoded_data =~ /\=$/
+
+  end
 
 end

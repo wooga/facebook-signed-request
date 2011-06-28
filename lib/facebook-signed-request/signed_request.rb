@@ -17,7 +17,7 @@ module Facebook
       end
     end
 
-    attr_reader :errors, :signature, :data
+    attr_reader :errors, :signature, :data, :encoded_data
 
     def initialize( request_data, options = {} )
       @encoded_signature, @encoded_data = request_data.split(".", 2)

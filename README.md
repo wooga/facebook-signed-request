@@ -27,16 +27,16 @@ Usage
 
     request.data
     # => {
-    #      "algorithm"=>"HMAC-SHA256",
-    #      "expires"=>1308988800,
-    #      "issued_at"=>1308985018,
-    #      "oauth_token"=>"114998258593813|2.AQBAttRlLVnwqNPZ.3600.1308988800…",
-    #      "user"=> {
-    #        "country"=>"de",
-    #        "locale"=>"en_US",
-    #        "age"=>{"min"=>21}
+    #      :Algorithm   => "HMAC-SHA256",
+    #      :expires     => 1308988800,
+    #      :issued_at   => 1308985018,
+    #      :oauth_token => "114998258593813|2.AQBAttRlLVnwqNPZ.3600.1308988800…",
+    #      :user => {
+    #        :country => "de",
+    #        :locale  => "en_US",
+    #        :age     => {"min"=>21}
     #      },
-    #      "user_id"=>"100000656666199"
+    #      :user_id => "100000656666199"
     #    }
 
 

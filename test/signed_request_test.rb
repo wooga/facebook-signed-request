@@ -20,6 +20,14 @@ class SignedRequestTest < Test::Unit::TestCase
     assert request.errors == [],  "Request should contain no errors"
   end
 
+  test "data of valid request is parsed to ruby hash with symbols as keys" do
+    request = Facebook::SignedRequest.new( @valid_request )
+
+    key_classes = request.data.map { |k,v| k.class } | [Symbol]
+
+    assert_equal 1, key_classes.length, "All keys should be symbols"
+  end
+
   test "parsing a request with invalid signature" do
     request = Facebook::SignedRequest.new( @invalid_request_1 )
     assert_equal false, request.valid?

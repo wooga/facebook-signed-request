@@ -81,7 +81,7 @@ module Facebook
 
     def parse_request_playload
       begin
-        return JSON.parse( @payload )
+        return JSON.parse( @payload, :symbolize_names => true )
       rescue
         @errors << "Invalid JSON object"
         return {}
@@ -89,7 +89,7 @@ module Facebook
     end
 
     def validate_algorithm
-      if @data['algorithm'] != "HMAC-SHA256"
+      if @data[:algorithm] != "HMAC-SHA256"
         @errors << "Invalid Algorithm. Expected: HMAC-SHA256"
       end
     end
@@ -111,7 +111,7 @@ module Facebook
     end
 
     def validate_timestamp
-      timestamp = @data['expires']
+      timestamp = @data[:expires]
 
       if timestamp && Time.at( timestamp ) <= Time.now
         raise ArgumentError, "OAuth Token has expired: #{Time.at( timestamp )}"

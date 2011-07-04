@@ -20,7 +20,12 @@ module Facebook
     attr_reader :errors, :signature, :data, :encoded_data
 
     def initialize( request_data, options = {} )
-      @encoded_signature, @encoded_data = request_data.split(".", 2)
+      if request_data.respond_to?(:split)
+        @encoded_signature, @encoded_data = request_data.split(".", 2)
+      else
+        @encoded_signature, @encoded_data = nil
+      end
+
       @secret = options[:secret] || SignedRequest.secret
       @errors = []
 
@@ -40,25 +45,31 @@ module Facebook
       @errors.empty?
     end
 
+    def invalid?
+      !valid?
+    end
+
     private
 
     def check_for_invalid_arguments
       if @encoded_signature.nil? || @encoded_data.nil?
-        raise ArgumentError, "Invalid Format. See http://developers.facebook.com/docs/authentication/signed_request/"
+        @errors << "Invalid Format. See http://developers.facebook.com/docs/authentication/signed_request/"
       end
 
       if @secret.nil?
-        raise ArgumentError, "No secret provided. Use SignedRequest.secret= or the options hash"
+        @errors << "No secret provided. Use SignedRequest.secret= or the options hash"
       end
 
       unless @secret.is_a?( String )
-        raise ArgumentError, "Secret should be a String"
+        @errors << "Secret should be a String"
       end
     end
 
     def base64_url_decode( encoded_string )
       encoded_string << '=' until ( encoded_string.length % 4 == 0 )
       Base64.urlsafe_decode64(encoded_string)
+    rescue
+      nil
     end
 
     def extract_request_signature
@@ -99,6 +110,8 @@ module Facebook
       computed_signature  = OpenSSL::HMAC.digest(
         digestor, @secret, @encoded_data
       )
+    rescue
+      nil
     end
 
     def validate_signature

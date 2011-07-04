@@ -31,45 +31,29 @@ class SignedRequestTest < Test::Unit::TestCase
   test "parsing a request with invalid signature" do
     request = Facebook::SignedRequest.new( @invalid_request_1 )
     assert_equal false, request.valid?
-    assert_equal 2, request.errors.length
+    assert_equal 1, request.errors.length
   end
 
   test "parsing a request with invalid payload" do
     request = Facebook::SignedRequest.new( @invalid_request_2 )
     assert_equal false, request.valid?
-    assert_equal 4, request.errors.length
+    assert_equal 3, request.errors.length
   end
 
   test "new request with invalid secret" do
-    exception = assert_raise ArgumentError do
-      request = Facebook::SignedRequest.new( "foo.bar", :secret => 2 )
-    end
-
-    expected = "Secret should be a String"
-
-    assert_equal expected, exception.message
+    request = Facebook::SignedRequest.new( "foo.bar", :secret => 2 )
+    assert request.invalid?
   end
 
   test "new request with missing secret" do
     Facebook::SignedRequest.secret = nil
-
-    exception = assert_raise ArgumentError do
-      request = Facebook::SignedRequest.new( "foo.bar" )
-    end
-
-    expected = "No secret provided. Use SignedRequest.secret= or the options hash"
-
-    assert_equal expected, exception.message
+    request = Facebook::SignedRequest.new( "foo.bar" )
+    assert request.invalid?
   end
 
   test "new request with invalid parameters" do
-    exception = assert_raise ArgumentError do
-      request = Facebook::SignedRequest.new( "foobar" )
-    end
-
-    expected = "Invalid Format. See http://developers.facebook.com/docs/authentication/signed_request/"
-
-    assert_equal expected, exception.message
+    request = Facebook::SignedRequest.new( "foobar" )
+    assert request.invalid?
   end
 
   test "request with :strict => true fails for expired oauth token" do

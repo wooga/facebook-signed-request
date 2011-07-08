@@ -10,7 +10,7 @@ module Facebook
         encoded_data      = Base64.urlsafe_encode64( options.to_json ).tr('=', '')
         digestor          = OpenSSL::Digest::Digest.new('sha256')
         signature         = OpenSSL::HMAC.digest( digestor, @secret, encoded_data )
-        encoded_signature = Base64.urlsafe_encode64( signature )
+        encoded_signature = Base64.strict_encode64( signature ).tr("+/", "-_")
         encoded_signature = encoded_signature.tr('=', '')
 
         "#{encoded_signature}.#{encoded_data}"
@@ -67,7 +67,7 @@ module Facebook
 
     def base64_url_decode( encoded_string )
       encoded_string << '=' until ( encoded_string.length % 4 == 0 )
-      Base64.urlsafe_decode64(encoded_string)
+      Base64.strict_decode64(encoded_string.tr("-_", "+/"))
     rescue
       nil
     end

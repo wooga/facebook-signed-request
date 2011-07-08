@@ -131,5 +131,13 @@ module Facebook
       end
     end
 
+    def urlsafe_encode64
+      strict_encode64(bin).tr("+/", "-_")
+    end
+
+    def urlsafe_decode64
+      Base64.strict_decode64(str.tr("-_", "+/"))
+    end
+
   end
 end

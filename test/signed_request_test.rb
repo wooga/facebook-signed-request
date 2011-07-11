@@ -69,21 +69,32 @@ class SignedRequestTest < Test::Unit::TestCase
   end
 
   test "encode and sign request params" do
-    request_1 = Facebook::SignedRequest.new( @valid_request )
 
-    reencoded_request = Facebook::SignedRequest.encode_and_sign(request_1.data)
+    request_params = {
+      :expires      => 1308988800,
+      :algorithm    => "HMAC-SHA256",
+      :user_id      => "111111111111111",
+      :oauth_token  => "111111111111111|2.AQBAttR11|T49w3BqoZUegypru1Gra70hED8",
+      :user         => {
+        :country  => "de",
+        :locale   => "en_US",
+        :age      => { :min => 21 }
+      },
+      :issued_at    => 1308985018
+    }
 
-    sig_1, data_1 = @valid_request.split(".", 2)
-    sig_2, data_2 = reencoded_request.split(".", 2)
+    request_json = request_params.to_json
+    encoded_json = Base64.urlsafe_encode64( request_json )
 
-    # Simulate invalid raw Base64 from Facebook by removing padding
-    assert_equal sig_1, sig_2
-    assert_equal data_1, data_2
+    reencoded_request = Facebook::SignedRequest.encode_and_sign( request_params )
 
-    request_2 = Facebook::SignedRequest.new( reencoded_request )
+    signature, payload = reencoded_request.split(".", 2)
 
-    assert_equal request_1.signature, request_2.signature
-    assert_equal request_1.data,      request_2.data
+    assert_equal encoded_json, payload
+
+    new_request = Facebook::SignedRequest.new( reencoded_request )
+
+    assert_equal new_request.data, request_params
   end
 
   test "ring encoding request with invalid base64 signature and payload" do

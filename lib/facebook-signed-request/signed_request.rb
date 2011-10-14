@@ -4,7 +4,7 @@ module Facebook
     class << self
       attr_accessor :secret
 
-      # Creates a signed_request with correctly padded Base64 encoding.
+      # Creates a signed_request without padding, just like facebook.
       # Mostly useful for testing.
       def encode_and_sign options
         encoded_data      = Base64.urlsafe_encode64( options.to_json ).tr('=', '')
@@ -116,9 +116,7 @@ module Facebook
 
     def validate_signature
       if @signature != @computed_signature
-        message = "Signatures do not match. " \
-                  "Computed: #{@computed_signature} but was #{@signature}"
-
+        message = "Signatures do not match."
         @errors << message
       end
     end

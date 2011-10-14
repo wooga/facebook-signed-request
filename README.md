@@ -22,7 +22,7 @@ Usage
     #  "Invalid Base64 Encoding for data",
     #  "Invalid JSON object",
     #  "Invalid Algorithm. Expected: HMAC-SHA256",
-    #  "Signatures do not match. #{expected} but was #{computed}"
+    #  "Signatures do not match.
     #]
 
     request.data

@@ -10,7 +10,7 @@ Usage
     request = Facebook::SignedRequest.new( params[:signed_request] )
 
     # or as an optional parameter for individual calls
-    request = Facebook::SignedRequest.new( params[:signed_request], secret )
+    request = Facebook::SignedRequest.new( params[:signed_request], secret: secret )
 
     request.valid?
     # => true / false
@@ -27,7 +27,7 @@ Usage
 
     request.data
     # => {
-    #      :Algorithm   => "HMAC-SHA256",
+    #      :algorithm   => "HMAC-SHA256",
     #      :expires     => 1308988800,
     #      :issued_at   => 1308985018,
     #      :oauth_token => "114998258593813|2.AQBAttRlLVnwqNPZ.3600.1308988800…",

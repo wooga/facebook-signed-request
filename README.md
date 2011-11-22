@@ -27,7 +27,7 @@ Usage
 
     request.data
     # => {
-    #      :Algorithm   => "HMAC-SHA256",
+    #      :algorithm   => "HMAC-SHA256",
     #      :expires     => 1308988800,
     #      :issued_at   => 1308985018,
     #      :oauth_token => "114998258593813|2.AQBAttRlLVnwqNPZ.3600.1308988800…",

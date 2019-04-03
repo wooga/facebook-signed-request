@@ -92,10 +92,19 @@ module Facebook
 
     def parse_request_playload
       begin
-        return JSON.parse( @payload, :symbolize_names => true )
+        return JSON.parse(@payload).reduce({}, &symbolize_keys_proc)
       rescue
         @errors << "Invalid JSON object"
         return {}
+      end
+    end
+
+    def symbolize_keys_proc
+      Proc.new do |hash, pair|
+        key, value = pair
+        symbolized_value = value.is_a?(Hash) ? value.reduce({}, &symbolize_keys_proc) : value
+        hash[key.to_sym] = symbolized_value
+        hash
       end
     end
 
